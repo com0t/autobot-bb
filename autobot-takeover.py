@@ -1,4 +1,4 @@
-import os, requests, sys, time
+import os, requests, sys, time, re
 from datetime import datetime
 
 takeover = 'https://discord.com/api/webhooks/814389502608277524/d6s49TIDkhbca1FX2CPfVsyXNarKFIEcnpOkGOP090kpIjd-_hPPde4CvXQjqw-4P-fL'
@@ -56,6 +56,9 @@ if content:
                     print(resp.status_code)
                     print(resp.content)
                     fp.write(resp.content.decode('utf-8')+"\n---"+content+"\n\n\n")
+                    if resp.status_code == 429:
+                        m = re.match('"retry_after": (.*)', resp.content.decode('utf-8'))
+                        time.sleep(m.groups()[0])
 
                 if (count+9)/30 == 0:
                     time.sleep(60)
