@@ -14,7 +14,11 @@ content = 'empty'
 if len(sys.argv) < 3:
     print(f'{sys.argv[0]} takeover|nuclei file-result.txt') 
     exit(1)
-url = sys.argv[1]
+
+if sys.argv[1] == 'takeover':
+    url = takeover
+elif sys.argv[1] == 'nuclei':
+    url = nuclei
 
 with open(sys.argv[2], 'r') as fp:
     content = fp.read()
