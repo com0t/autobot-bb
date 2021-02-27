@@ -33,29 +33,29 @@ if content:
         
         start = 0
         end = 1
+        count = 0
         with open('domain-takeover-bot.log', 'w+') as fp:
-            count = 0
             while end <= len(contents):
-                if len(contents[start:end]) < 2000 and n <= len(contents):
+                content = '\n'.join([c for c in contents[start:end]])
+                if len(content) < 2000 and end <= len(contents):
                     end += 1
                     continue
 
                 end -= 1
-                content = contents[start:end]
+                content = '\n'.join([c for c in contents[start:end]])
                 start = end
 
-                con = '\n'.join([s for s in content])
-                con = f'> **Block {count}**\n> **Date: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}**\n' + con
+                content = f'> **Block {count}**\n> **Date: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}**\n' + content
                 count += 1
                 for i in importan:
-                    con = con.replace(i, f'**{i}**')
-                data["content"] = con
+                    content = content.replace(i, f'**{i}**')
+                data["content"] = content
                 resp = requests.post(url, json=data)
 
                 if resp.status_code != 204:
                     print(resp.status_code)
                     print(resp.content)
-                    fp.write(resp.content.decode('utf-8')+"\n---"+con+"\n\n\n")
+                    fp.write(resp.content.decode('utf-8')+"\n---"+content+"\n\n\n")
 
                 if (count+9)/30 == 0:
                     time.sleep(60)
