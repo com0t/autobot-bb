@@ -16,7 +16,7 @@ if len(sys.argv) < 3:
     exit(1)
 url = sys.argv[1]
 
-with open(sys.argv[1], 'r') as fp:
+with open(sys.argv[2], 'r') as fp:
     content = fp.read()
 
 if content:
