@@ -35,28 +35,30 @@ if content:
         end = 1
         with open('domain-takeover-bot.log', 'w+') as fp:
             count = 0
-            while end <= len(content):
-                if len(content[start:end]) < 2000 and n <= len(content):
+            while end <= len(contents):
+                if len(contents[start:end]) < 2000 and n <= len(contents):
                     end += 1
                     continue
 
-                contents = content[start:end-1]
-                for con in contents:
-                    con = '\n'.join([s for s in con])
-                    con = f'> **Block {count}**\n> **Date: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}**\n' + con
-                    count += 1
-                    for i in importan:
-                        content = content.replace(i, f'**{i}**')
-                    data["content"] = con
-                    resp = requests.post(url, json=data)
+                end -= 1
+                content = contents[start:end]
+                start = end
 
-                    if resp.status_code != 204:
-                        print(resp.status_code)
-                        print(resp.content)
-                        fp.write(resp.content.decode('utf-8')+"\n---"+con+"\n\n\n")
+                con = '\n'.join([s for s in content])
+                con = f'> **Block {count}**\n> **Date: {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}**\n' + con
+                count += 1
+                for i in importan:
+                    con = con.replace(i, f'**{i}**')
+                data["content"] = con
+                resp = requests.post(url, json=data)
 
-                    if (count+9)/30 == 0:
-                        time.sleep(60)
+                if resp.status_code != 204:
+                    print(resp.status_code)
+                    print(resp.content)
+                    fp.write(resp.content.decode('utf-8')+"\n---"+con+"\n\n\n")
+
+                if (count+9)/30 == 0:
+                    time.sleep(60)
 
     except Exception as e:
         print(e)
