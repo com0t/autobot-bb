@@ -37,11 +37,12 @@ if content:
         with open('domain-takeover-bot.log', 'w+') as fp:
             while end <= len(contents):
                 content = '\n'.join([c for c in contents[start:end]])
-                if len(content) < 2000 and end <= len(contents):
+                if len(content) < 1666 and end <= len(contents):
                     end += 1
                     continue
 
-                end -= 1
+                if end > start+2:
+                    end -= 1
                 content = '\n'.join([c for c in contents[start:end]])
                 start = end
 
