@@ -57,8 +57,8 @@ if content:
                     print(resp.content)
                     fp.write(resp.content.decode('utf-8')+"\n---"+content+"\n\n\n")
                     if resp.status_code == 429:
-                        m = re.match('"retry_after": (.*)', resp.content.decode('utf-8'))
-                        time.sleep(m.groups()[0])
+                        m = re.match('(.|\n)*"retry_after": (\d+)', resp.content.decode('utf-8'))
+                        time.sleep(int(m.groups()[0]))
 
                 if (count+9)/30 == 0:
                     time.sleep(60)
